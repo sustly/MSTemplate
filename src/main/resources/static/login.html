@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <LINK REL="SHORTCUT ICON" HREF="http://www.baidu.com/favicon.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>综合信息管理系统</title>
+    <script type="text/javascript" src="adminjs/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="adminjs/jquery.serializejson.min.js"></script>
+    <script type="text/javascript" src="adminjs/jquery.easyui.1.2.6.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <script type="text/javascript">
+        function login() {
+            var name = $("#signup_name").val();
+            var pass = $("#signup_password").val();
+            var datajson = {loginName:name,password:pass};
+            $.ajax({
+                url:"loginCheck",
+                type:"post",
+                data:JSON.stringify(datajson),
+                contentType:'application/json;charset=UTF-8',
+                dataType:"json",
+                success:function (data) {
+                    if (data.isSuccess === true) {
+                        window.location.href="index";
+                    } else {
+                        $.messager.alert('提示',data.message,'info');
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class='signup_container'>
+<div class="w-load"><div class="spin"></div></div>
+    <h1 class='signup_title'>综合信息管理系统</h1>
+    <div id="userInfo">
+    	<span style="float:left; margin-left:40px; height:200px; border:0px solid red"><img src='images/erp.jpg' id='admin'/></span>
+        <span style="float:left; margin-left:40px; height:200px; border:0px solid red">
+            <div id="signup_forms" class="signup_forms clearfix">
+                        <form class="signup_form_form" id="loginform" >
+                                <div class="form_row first_row">
+                                    <!--<label for="signup_email">请输入用户名</label>-->
+                                    <input type="text" name="loginName" placeholder="请输入用户名" id="signup_name" >
+                                </div>
+                                <div class="form_row">
+                                    <!--<label for="signup_password">请输入密码</label>-->
+                                    <input type="password" name="password" placeholder="请输入密码" id="signup_password" >
+                                </div>
+                       </form>
+            </div> 
+            <div id="foo"></div>
+                	<br/>      
+        </span>
+    </div>
+    
+    
+
+    <div class="login-btn-set"><div class='rem'>记住我</div> <a onclick="login()" class='login-btn'></a></div>
+</div>
+
+</body>
+
+
+
+</html>

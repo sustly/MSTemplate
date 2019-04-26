@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>员工管理</title>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css" />
+	<script type="text/javascript" src="adminjs/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="adminjs/jquery.serializejson.min.js"></script>
+	<script type="text/javascript" src="adminjs/jquery.easyui.1.2.6.min.js"></script>
+	<script type="text/javascript" src="adminjs/themes/locale/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css"/>
+	<script type="text/javascript" src="js/crud.js"></script>
+<script type="text/javascript">
+	var name="user";
+	var height = 230;
+	var width = 270;
+	var columns=[[
+	  		    {field:'id',title:'编号',width:200},
+	  		    {field:'loginName',title:'登陆名',width:200},
+	  		    {field:'name',title:'真实姓名',width:200},
+	  		    {field:'email',title:'邮件地址',width:200},
+	  		    {field:'phone',title:'联系电话',width:200},
+	  		    {field:'departmentName',title:'所属部门',width:200},
+
+				{field:'-',title:'操作',width:200,formatter: function(value,row,index){
+					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.id + ')">修改</a>';
+					oper += ' <a href="javascript:void(0)" onclick="del(' + row.id + ')">删除</a>';
+					return oper;
+				}}
+				]];
+
+</script>
+</head>
+<body>
+<div class="easyui-panel" style="padding-left:4px;border-bottom:0px;">
+	<div style="height:2px;"></div>
+	<form id="searchForm">
+			登陆名：<input name="loginName" >
+	真实姓名：<input name="name" >
+	邮件地址：<input name="email" >
+	联系电话：<input name="phone" >
+	是否可用：<select name="isAvailable" class="easyui-combobox" >
+		<option value="1">可用</option>
+		<option value="0">不可用</option>
+	</select>
+		所属部门：<input name="id" class="easyui-combobox" data-options="
+					url:'departmentName_list', textField:'departmentName', valueField:'id'
+				">
+
+		<button type="button" id="btnSearch">查询</button>
+	</form>
+	<div style="height:2px;"></div>
+</div>
+<table id="grid" style="width: 100%"></table>
+
+<div id="editDlg">
+	<form id="editForm">
+			<input name="id" type="hidden">
+
+		<table>
+			<tr>
+				<td>登陆名</td><td><input name="loginName" class="easyui-validatebox" data-options="
+					required:true,missingMessage:'登陆名不能为空!'
+					">
+				</td>
+			</tr>
+			<tr>
+				<td>真实姓名</td><td><input name="name"> </td>
+			</tr>
+			<tr>
+				<td>邮件地址</td><td><input name="email" class="easyui-validatebox" data-options="
+				required:true,validType:'email',invalidMessage:'Email格式不正确'
+				"> </td>
+			</tr>
+			<tr>
+				<td>联系电话</td><td><input name="phone"> </td>
+			</tr>
+			<tr>
+				<td>所属部门</td><td><input name="departmentId" class="easyui-combobox" data-options="
+					url:'departmentName_list', textField:'departtmentName', valueField:'id', required:true
+				"></td>
+			</tr>
+
+		</table>
+		<button id="btnSave" type="button">保存</button>
+	</form>
+</div>
+
+</body>
+</html>

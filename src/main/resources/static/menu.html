@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>菜单管理</title>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css" />
+	<script type="text/javascript" src="adminjs/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="adminjs/jquery.serializejson.min.js"></script>
+	<script type="text/javascript" src="adminjs/jquery.easyui.1.2.6.min.js"></script>
+	<script type="text/javascript" src="adminjs/themes/locale/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css"/>
+<script type="text/javascript" src="js/crud.js"></script>
+<script type="text/javascript">
+	var name="menu";
+    var width=250;
+    var height=200;
+	var columns=[[
+	  		    {field:'menuid',title:'菜单ID',width:200},
+	  		    {field:'menuname',title:'菜单名称',width:200},
+	  		    {field:'icon',title:'图标',width:200},
+	  		    {field:'url',title:'URL',width:200},
+	  		    {field:'pid',title:'上级菜单ID',width:200},
+
+				{field:'-',title:'操作',width:400,formatter: function(value,row,index){
+					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.menuid + ')">修改</a>';
+					oper += ' <a href="javascript:void(0)" onclick="del(' + row.menuid + ')">删除</a>';
+					return oper;
+				}}
+				]];
+
+</script>
+</head>
+<body>
+<div class="easyui-panel" style="padding-left:4px;border-bottom:0px;">
+	<div style="height:2px;"></div>
+	<form id="searchForm">
+			菜单名称：<input name="menuname" >
+	图标：<input name="icon" >
+	URL：<input name="url" >
+	上级菜单ID：<input name="pid" >
+
+		<button type="button" id="btnSearch">查询</button>
+	</form>
+	<div style="height:2px;"></div>
+</div>
+<table id="grid" width="100%"></table>
+
+<div id="editDlg">
+	<form id="editForm">
+			<input name="menuid" type="hidden">
+
+		<table>
+						<tr>
+				<td>菜单名称</td><td><input name="menuname" id="menuname"> </td>
+			</tr>
+			<tr>
+				<td>图标</td><td><input name="icon" id="icon"> </td>
+			</tr>
+			<tr>
+				<td>URL</td><td><input name="url" id="url"> </td>
+			</tr>
+			<tr>
+				<td>上级菜单ID</td><td><input name="pid" id="pid"> </td>
+			</tr>
+
+		</table>
+		<button id="btnSave" type="button">保存</button>
+	</form>
+</div>
+
+</body>
+</html>

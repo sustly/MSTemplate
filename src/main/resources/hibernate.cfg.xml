@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- ###################Hibernate 基本配置信息 ############# -->
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mst?useSSL=false</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <!-- 配置用户名 -->
+    <property name="hibernate.connection.username">root</property>
+    <!-- 配置密码 -->
+    <property name="hibernate.connection.password">123456</property>
+    <!-- 连接数据库，数据库名称 -->
+    <!-- 是否输出sql语句 Could not load java.util.ListIterator. The eventual following
+        stack trace is caused by an error thrown for debugging purposes as well as  170.12.190.54
+        to attempt to terminate the thread which caused the illegal access, and has
+        no functional impact. -->
+    <property name="show_sql">true</property>
+    <property name="format_sql">false</property>
+    <!-- ################################################## -->
+    <!-- ###############C3p0连接池配置信息################## -->
+    <!-- ################################################## -->
+    <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <!-- 最大连接数 -->
+    <property name="hibernate.c3p0.max_size">50</property> <!---->
+    <!-- 最小连接数 -->
+    <property name="hibernate.c3p0.min_size">10</property>	<!-- -->
+    <!-- 获得连接的超时时间,如果超过这个时间,会抛出异常，单位毫秒 -->
+    <property name="hibernate.c3p0.timeout">36000</property><!-- -->
+    <!-- 最大的PreparedStatement的数量 -->
+    <property name="hibernate.c3p0.max_statements">10000</property><!-- -->
+    <!-- 每隔120秒检查连接池里的空闲连接 ，单位是秒默认为0标记连接数永不过期 -->
+    <property name="hibernate.c3p0.idle_test_period">120</property> <!---->
+    <!-- 当连接池里面的连接用完的时候，C3P0一下获取的新的连接数 -->
+    <property name="hibernate.c3p0.acquire_increment">2</property> <!---->
+    <!-- 每次都验证连接是否可用 -->
+    <property name="hibernate.c3p0.validate">true</property> <!-- -->
+    <!-- ##################################################### -->
+    <!-- ###################Hibernate 的配置使用 ############# -->
+    <!-- ##################################################### -->
+    <!-- ################配置连接池永不超时#################### -->
+    <property name="connection.autoReconnect">true</property>
+    <property name="connection.autoReconnectForPools">true</property>
+    <property name="connection.is-connection-validation-required">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+
+    <!-- ##########################BO对象映射配置########################### -->
+
+    <mapping class="com.sustly.model.User"/>
+    <mapping class="com.sustly.model.Menu"/>
+
+  </session-factory>
+</hibernate-configuration>
