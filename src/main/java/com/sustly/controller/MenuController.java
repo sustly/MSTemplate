@@ -31,7 +31,7 @@ public class MenuController {
     @PostMapping("/menu_listByPage")
     @ResponseBody
     public Map<String, Object> listPage(HttpServletRequest request){
-        Map<String, Object> map = new HashMap<String, Object>(20);
+        Map<String, Object> map = new HashMap<>(20);
 
         List<Menu> menuList = menuService.getMenuList(request);
         Integer count = menuService.getMenuCount(request);
@@ -49,7 +49,7 @@ public class MenuController {
     @PostMapping("menu_delete")
     @ResponseBody
     public Map<String, Object> menuDelete(@RequestParam("id")Integer id){
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         menuService.deleteMenuById(id);
         map.put("message","删除成功！");
         return map;
@@ -58,9 +58,9 @@ public class MenuController {
     @PostMapping("menu_add")
     @ResponseBody
     public Map<String, Object> menuAdd(@RequestBody Menu menu)throws UnsupportedEncodingException {
-        String menuname = URLDecoder.decode(menu.getMenuname(), "utf-8");
-        menu.setMenuname(menuname);
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        String menuName = URLDecoder.decode(menu.getMenuName(), "utf-8");
+        menu.setMenuName(menuName);
+        Map<String, Object> map = new HashMap<>(2);
         menuService.saveMenu(menu);
         map.put("message","保存成功！");
         return map;
@@ -69,9 +69,9 @@ public class MenuController {
     @PostMapping("menu_update")
     @ResponseBody
     public Map<String, Object> menuUpdate(@RequestBody Menu menu)throws UnsupportedEncodingException{
-        String menuname = URLDecoder.decode(menu.getMenuname(), "utf-8");
-        menu.setMenuname(menuname);
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        String menuName = URLDecoder.decode(menu.getMenuName(), "utf-8");
+        menu.setMenuName(menuName);
+        Map<String, Object> map = new HashMap<>(2);
         menuService.updateMenu(menu);
         map.put("message","修改成功！");
         return map;

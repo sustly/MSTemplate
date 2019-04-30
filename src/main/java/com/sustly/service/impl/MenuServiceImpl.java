@@ -26,8 +26,12 @@ import java.util.stream.Collectors;
 @Transactional(rollbackOn = Exception.class)
 public class MenuServiceImpl implements MenuService {
 
+    private final MenuDao menuDao;
+
     @Autowired
-    private MenuDao menuDao;
+    public MenuServiceImpl(MenuDao menuDao) {
+        this.menuDao = menuDao;
+    }
 
     /**
      * getMenuTree 获取json格式的menu
@@ -48,7 +52,7 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> getMenuList(HttpServletRequest request) {
         String pid1 = request.getParameter("pid");
         int pid = (pid1 == null || "".equals(pid1.trim())) ?-1:Integer.parseInt(pid1);
-        String menuName = request.getParameter("menuname");
+        String menuName = request.getParameter("menuName");
         String url = request.getParameter("url");
         String icon = request.getParameter("icon");
         String page1 = request.getParameter("page");
@@ -77,7 +81,7 @@ public class MenuServiceImpl implements MenuService {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("pid"), pid));
             }
             if (menuName != null && !"".equals(menuName.trim())) {
-                predicate.getExpressions().add(criteriaBuilder.equal(root.get("menuname"), menuName));
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("menuName"), menuName));
             }
             if (url != null && !"".equals(url.trim())) {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("url"), url));
@@ -96,7 +100,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public Menu getMenuById(Integer id) {
-        return menuDao.getMenuByMenuid(id);
+        return menuDao.getMenuByMenuId(id);
     }
 
     /**
@@ -105,7 +109,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public void deleteMenuById(Integer id) {
-        menuDao.deleteMenuByMenuid(id);
+        menuDao.deleteMenuByMenuId(id);
     }
 
     /**
@@ -116,9 +120,9 @@ public class MenuServiceImpl implements MenuService {
     public void saveMenu(Menu menu) {
         Integer count = menuDao.countByPidIs(menu.getPid());
         if (menu.getPid() == 0){
-            menu.setMenuid((count+1)*100);
+            menu.setMenuId((count+1)*100);
         } else {
-            menu.setMenuid(count+1+menu.getPid());
+            menu.setMenuId(count+1+menu.getPid());
         }
         menuDao.save(menu);
     }
@@ -127,7 +131,7 @@ public class MenuServiceImpl implements MenuService {
     public Integer getMenuCount(HttpServletRequest request) {
         String pid1 = request.getParameter("pid");
         int pid = (pid1 == null || "".equals(pid1.trim())) ?-1:Integer.parseInt(pid1);
-        String menuName = request.getParameter("menuname");
+        String menuName = request.getParameter("menuName");
         String url = request.getParameter("url");
         String icon = request.getParameter("icon");
 
@@ -148,7 +152,7 @@ public class MenuServiceImpl implements MenuService {
     private JSONObject dealMenuTree(List<Menu> menuTree) {
         Menu menuRoot = null;
         for (Menu menu:menuTree){
-            if (menu.getMenuid()==0){
+            if (menu.getMenuId()==0){
                 menuRoot = menu;
             }
         }
@@ -166,7 +170,7 @@ public class MenuServiceImpl implements MenuService {
             return ;
         }
         for(Menu menu : menuTree){
-            if (menu.getPid() == menuRoot.getMenuid() ){
+            if (menu.getPid() == menuRoot.getMenuId() ){
                 if(menuRoot.getMenus() == null ){
                     List<Menu> list = new ArrayList<Menu>();
                     menuRoot.setMenus(list);
@@ -185,7 +189,7 @@ public class MenuServiceImpl implements MenuService {
      */
     private boolean getChildTree(Menu menuRoot, List<Menu> menuTree) {
         for(Menu menu : menuTree){
-            if (menu.getPid() == menuRoot.getMenuid() ){
+            if (menu.getPid() == menuRoot.getMenuId() ){
                 return false;
             }
         }

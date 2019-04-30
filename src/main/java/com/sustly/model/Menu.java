@@ -9,8 +9,8 @@ import java.util.List;
  */
 @Entity
 public class Menu {
-    private Integer menuid;
-    private String menuname;
+    private Integer menuId;
+    private String menuName;
     private String icon;
     private String url;
     private Integer pid;
@@ -27,22 +27,22 @@ public class Menu {
 
     @Id
     @Column(name = "menu_id")
-    public Integer getMenuid() {
-        return menuid;
+    public Integer getMenuId() {
+        return menuId;
     }
 
-    public void setMenuid(Integer menuId) {
-        this.menuid = menuId;
+    public void setMenuId(Integer menuId) {
+        this.menuId = menuId;
     }
 
     @Basic
     @Column(name = "menu_name")
-    public String getMenuname() {
-        return menuname;
+    public String getMenuName() {
+        return menuName;
     }
 
-    public void setMenuname(String menuName) {
-        this.menuname = menuName;
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 
     @Basic
@@ -82,8 +82,8 @@ public class Menu {
 
         Menu menu = (Menu) o;
 
-        if (menuid != null ? !menuid.equals(menu.menuid) : menu.menuid != null) return false;
-        if (menuname != null ? !menuname.equals(menu.menuname) : menu.menuname != null) return false;
+        if (menuId != null ? !menuId.equals(menu.menuId) : menu.menuId != null) return false;
+        if (menuName != null ? !menuName.equals(menu.menuName) : menu.menuName != null) return false;
         if (icon != null ? !icon.equals(menu.icon) : menu.icon != null) return false;
         if (url != null ? !url.equals(menu.url) : menu.url != null) return false;
         if (pid != null ? !pid.equals(menu.pid) : menu.pid != null) return false;
@@ -93,8 +93,8 @@ public class Menu {
 
     @Override
     public int hashCode() {
-        int result = menuid != null ? menuid.hashCode() : 0;
-        result = 31 * result + (menuname != null ? menuname.hashCode() : 0);
+        int result = menuId != null ? menuId.hashCode() : 0;
+        result = 31 * result + (menuName != null ? menuName.hashCode() : 0);
         result = 31 * result + (icon != null ? icon.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (pid != null ? pid.hashCode() : 0);

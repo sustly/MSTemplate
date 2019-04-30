@@ -17,15 +17,15 @@
     var width=250;
     var height=200;
 	var columns=[[
-	  		    {field:'menuid',title:'菜单ID',width:200},
-	  		    {field:'menuname',title:'菜单名称',width:200},
+	  		    {field:'menuId',title:'菜单ID',width:200},
+	  		    {field:'menuName',title:'菜单名称',width:200},
 	  		    {field:'icon',title:'图标',width:200},
 	  		    {field:'url',title:'URL',width:200},
 	  		    {field:'pid',title:'上级菜单ID',width:200},
 
 				{field:'-',title:'操作',width:400,formatter: function(value,row,index){
-					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.menuid + ')">修改</a>';
-					oper += ' <a href="javascript:void(0)" onclick="del(' + row.menuid + ')">删除</a>';
+					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.menuId + ')">修改</a>';
+					oper += ' <a href="javascript:void(0)" onclick="del(' + row.menuId + ')">删除</a>';
 					return oper;
 				}}
 				]];
@@ -36,7 +36,7 @@
 <div class="easyui-panel" style="padding-left:4px;border-bottom:0px;">
 	<div style="height:2px;"></div>
 	<form id="searchForm">
-			菜单名称：<input name="menuname" >
+			菜单名称：<input name="menuName" >
 	图标：<input name="icon" >
 	URL：<input name="url" >
 	上级菜单ID：<input name="pid" >
@@ -49,11 +49,11 @@
 
 <div id="editDlg">
 	<form id="editForm">
-			<input name="menuid" type="hidden">
+			<input name="menuId" type="hidden">
 
 		<table>
 						<tr>
-				<td>菜单名称</td><td><input name="menuname" id="menuname"> </td>
+				<td>菜单名称</td><td><input name="menuName" id="menuName"> </td>
 			</tr>
 			<tr>
 				<td>图标</td><td><input name="icon" id="icon"> </td>

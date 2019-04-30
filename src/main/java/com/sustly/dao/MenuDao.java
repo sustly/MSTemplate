@@ -21,18 +21,18 @@ public interface MenuDao extends JpaRepository<Menu,Integer>, JpaSpecificationEx
     List<Menu> getMenuTree();
 
     /**
-     * getMenuByMenuid
+     * getMenuByMenuId
      * @param id  id
      * @return Menu
      */
-    Menu getMenuByMenuid(Integer id);
+    Menu getMenuByMenuId(Integer id);
 
     /**
      * 根据id删除menu
      * @param id id
      */
     @Modifying
-    void deleteMenuByMenuid(Integer id);
+    void deleteMenuByMenuId(Integer id);
 
     /*void saveMenu(Menu menu);*/
 

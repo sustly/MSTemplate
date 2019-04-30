@@ -6,15 +6,15 @@ var onlyOpenTitle="欢迎使用";//不允许关闭的标签的标题
 
 var _menus={
     "icon":"icon-sys",
-    "menuid":"0",
-    "menuname":"系统菜单",
+    "menuId":"0",
+    "menuName":"系统菜单",
     "menus":
         [
             {
-                "icon":"icon-sys","menuid":"100","menuname":"基础数据","menus":
+                "icon":"icon-sys","menuId":"100","menuName":"基础数据","menus":
                     [
-                        {"icon":"icon-sys","menuid":"101","menuname":"商品类型管理","url":"goodstype.html"}	,
-                        {"icon":"icon-sys","menuid":"102","menuname":"商品管理","url":"goods.html"}
+                        {"icon":"icon-sys","menuId":"101","menuName":"商品类型管理","url":"goodstype.html"}	,
+                        {"icon":"icon-sys","menuId":"102","menuName":"商品管理","url":"goods.html"}
                     ]
             }
         ]
@@ -90,7 +90,7 @@ function InitLeftMenu() {
 			var menulist ='';
 			menulist +='<ul class="navlist">';
 	        $.each(n.menus, function(j, o) {
-				menulist += '<li><div ><a ref="'+o.menuid+'" href="#" rel="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span><span class="nav">' + o.menuname + '</span></a></div> ';
+				menulist += '<li><div ><a ref="'+o.menuId+'" href="#" rel="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span><span class="nav">' + o.menuName + '</span></a></div> ';
 				/*
 				if(o.child && o.child.length>0)
 				{
@@ -98,7 +98,7 @@ function InitLeftMenu() {
 	
 					menulist += '<ul class="third_ul">';
 					$.each(o.child,function(k,p){
-						menulist += '<li><div><a ref="'+p.menuid+'" href="#" rel="' + p.url + '" ><span class="icon '+p.icon+'" >&nbsp;</span><span class="nav">' + p.menuname + '</span></a></div> </li>'
+						menulist += '<li><div><a ref="'+p.menuId+'" href="#" rel="' + p.url + '" ><span class="icon '+p.icon+'" >&nbsp;</span><span class="nav">' + p.menuName + '</span></a></div> </li>'
 					});
 					menulist += '</ul>';
 				}
@@ -108,14 +108,14 @@ function InitLeftMenu() {
 			menulist += '</ul>';
 	
 			$('#nav').accordion('add', {
-	            title: n.menuname,
+	            title: n.menuName,
 	            content: menulist,
 					border:false,
 	            iconCls: 'icon ' + n.icon
 	        });
 	
 			if(i==0)
-				selectedPanelname =n.menuname;
+				selectedPanelname =n.menuName;
 	
 	    });
 	
@@ -127,10 +127,10 @@ function InitLeftMenu() {
         var tabTitle = $(this).children('.nav').text();
 
         var url = $(this).attr("rel");
-        var menuid = $(this).attr("ref");
+        var menuId = $(this).attr("ref");
         var icon = $(this).find('.icon').attr('class');
 
-        var third = find(menuid);
+        var third = find(menuId);
         if(third && third.child && third.child.length>0)
         {
             $('.third_ul').slideUp();
@@ -165,11 +165,11 @@ function InitLeftMenu() {
     //$('#nav').accordion('select', t);
 }
 //获取左侧导航的图标
-function getIcon(menuid){
+function getIcon(menuId){
 	var icon = 'icon ';
 	$.each(_menus.menus, function(i, n) {
 		 $.each(n.menus, function(j, o) {
-		 	if(o.menuid==menuid){
+		 	if(o.menuId==menuId){
 				icon += o.icon;
 			}
 		 })
@@ -178,11 +178,11 @@ function getIcon(menuid){
     return icon;
 }
 
-function find(menuid){
+function find(menuId){
     var obj=null;
     $.each(_menus.menus, function(i, n) {
         $.each(n.menus, function(j, o) {
-            if(o.menuid==menuid){
+            if(o.menuId==menuId){
                 obj = o;
             }
         });

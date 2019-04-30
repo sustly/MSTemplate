@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     public void updateLoginTime(User user) throws Exception {
         String localTime = DateUtil.getLocalTime();
         User oldUser = userDao.findUserByLoginNameAndPassword(user.getLoginName(),MD5Util.encrypt(user.getPassword()));
-        oldUser.setLoginName(localTime);
+        oldUser.setLastLoginTime(localTime);
         userDao.save(oldUser);
     }
 }
