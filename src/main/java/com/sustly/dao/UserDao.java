@@ -1,32 +1,46 @@
 package com.sustly.dao;
 
 import com.sustly.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 /**
  * @author admin
  */
-public interface UserDao /*extends JpaRepository<User, Integer>*/ {
+public interface UserDao extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
     /**
      * findUserByUsernameAndPassword
      * @param name name
      * @param password password
-     * @return
+     * @return User
      */
-    User findUserByUsernameAndPassword(String name, String password);
+    User findUserByLoginNameAndPassword(String name, String password);
 
-    void updataPasswordById(Integer id, String newPasseord);
+    /**
+     * updataPasswordById
+     * @param id id
+     * @param newPasseord newPasseord
+     */
+    @Modifying
+    @Query("update User u set u.password=:newPasseord where u.id=:id")
+    void updatePasswordById(@Param("id") Integer id, @Param("newPasseord") String newPasseord);
 
-    List<User> getUser(String loginName, String name, String email, String phone, Integer isAvailable, Integer departmentId, int page, int rows);
-
-    void updateUser(User user);
-
-    void saveUser(User user);
-
+    /**
+     * deleteUserById
+     * @param id id
+     */
+    @Modifying
     void deleteUserById(Integer id);
 
+    /**
+     * findUserById
+     * @param id id
+     * @return User
+     */
     User findUserById(Integer id);
-
-    void updateLoginTime(User user);
 }

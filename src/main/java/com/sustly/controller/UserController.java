@@ -2,6 +2,7 @@ package com.sustly.controller;
 
 import com.sustly.model.User;
 import com.sustly.service.UserService;
+import com.sustly.utils.DateUtil;
 import com.sustly.utils.MD5Util;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,7 @@ public class UserController {
         user.setName(name);
         user.setLoginName(loginName);
         user.setPassword(MD5Util.encrypt("000000"));
+        user.setCreateTime(DateUtil.getLocalTime());
         Map<String, Object> map = new HashMap<String, Object>(2);
         userService.saveUser(user);
         map.put("message","保存成功！");

@@ -5,13 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.sustly.dao.MenuDao;
 import com.sustly.model.Menu;
 import com.sustly.service.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liyue
@@ -21,7 +26,7 @@ import java.util.List;
 @Transactional(rollbackOn = Exception.class)
 public class MenuServiceImpl implements MenuService {
 
-    @Resource(name = "menuDao")
+    @Autowired
     private MenuDao menuDao;
 
     /**
@@ -50,7 +55,30 @@ public class MenuServiceImpl implements MenuService {
         int page = (page1 == null || "".equals(page1.trim()))?-1:Integer.parseInt(page1);
         String rows1 = request.getParameter("rows");
         int rows = (rows1 == null || "".equals(rows1.trim()))?-1:Integer.parseInt(rows1);
-        return menuDao.getMenuTree(pid, menuName, url, icon, page, rows);
+
+        Specification<Menu> specification = getMenuSpecification(pid, menuName, url, icon);
+        int firstResult = (page -1) * rows;
+        Pageable pageable = new PageRequest(firstResult, rows);
+        return menuDao.findAll(specification,pageable).stream().collect(Collectors.toList());
+    }
+
+    private Specification<Menu> getMenuSpecification(int pid, String menuName, String url, String icon) {
+        return (Specification<Menu>) (root, criteriaQuery, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (pid != -1) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("pid"), pid));
+            }
+            if (menuName != null && !"".equals(menuName.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("menuname"), menuName));
+            }
+            if (url != null && !"".equals(url.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("url"), url));
+            }
+            if (icon != null && !"".equals(icon.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("icon"), icon));
+            }
+            return predicate;
+        };
     }
 
     /**
@@ -60,7 +88,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public Menu getMenuById(Integer id) {
-        return menuDao.getMenuById(id);
+        return menuDao.getMenuByMenuid(id);
     }
 
     /**
@@ -69,7 +97,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public void deleteMenuById(Integer id) {
-        menuDao.deleteMenuById(id);
+        menuDao.deleteMenuByMenuid(id);
     }
 
     /**
@@ -78,28 +106,30 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public void saveMenu(Menu menu) {
-        Integer count = menuDao.findBrotherMenuByPid(menu.getPid());
+        Integer count = menuDao.countByPidIs(menu.getPid());
         if (menu.getPid() == 0){
             menu.setMenuid((count+1)*100);
         } else {
             menu.setMenuid(count+1+menu.getPid());
         }
-        menuDao.saveMenu(menu);
+        menuDao.save(menu);
     }
 
     @Override
-    public Long getMenuCount(HttpServletRequest request) {
+    public Integer getMenuCount(HttpServletRequest request) {
         String pid1 = request.getParameter("pid");
         int pid = (pid1 == null || "".equals(pid1.trim())) ?-1:Integer.parseInt(pid1);
         String menuName = request.getParameter("menuname");
         String url = request.getParameter("url");
         String icon = request.getParameter("icon");
-        return menuDao.getMenuCount(pid, menuName, url, icon);
+
+        Specification<Menu> specification = getMenuSpecification(pid, menuName, url, icon);
+        return new ArrayList<>(menuDao.findAll(specification)).size();
     }
 
     @Override
     public void updateMenu(Menu menu) {
-        menuDao.updateMenu(menu);
+        menuDao.save(menu);
     }
 
     /**

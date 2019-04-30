@@ -4,16 +4,21 @@ import com.sustly.dao.UserDao;
 import com.sustly.model.User;
 import com.sustly.service.UserService;
 import com.sustly.utils.BeanUtil;
+import com.sustly.utils.DateUtil;
 import com.sustly.utils.MD5Util;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liyue
@@ -29,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String name, String password) {
         String encryptPassword = MD5Util.encrypt(password);
-        return userDao.findUserByUsernameAndPassword(name,encryptPassword);
+        return userDao.findUserByLoginNameAndPassword(name,encryptPassword);
     }
 
     @Override
@@ -41,9 +46,9 @@ public class UserServiceImpl implements UserService {
         //提取主角,拿到User
         User user = (User)subject.getPrincipal();
         String loginName = user.getLoginName();
-        User user1 = userDao.findUserByUsernameAndPassword(loginName, oldPassword);
+        User user1 = userDao.findUserByLoginNameAndPassword(loginName, oldPassword);
         if (user1.getPassword().equals(oldPassword)){
-            userDao.updataPasswordById(user1.getId(), newPassword);
+            userDao.updatePasswordById(user1.getId(), newPassword);
             return true;
         }
         return false;
@@ -67,19 +72,48 @@ public class UserServiceImpl implements UserService {
             isAvailable = Integer.parseInt(isAvailable1);
         }
 
-        return userDao.getUser(loginName,name,email,phone,isAvailable,departmentId,page,rows);
+        Specification<User> specification = getUserSpecification(departmentId, loginName, name, email, phone, isAvailable);
+        int firstResult = (page -1) * rows;
+        Pageable pageable = new PageRequest(firstResult, rows);
+        return userDao.findAll(specification,pageable).stream().collect(Collectors.toList());
+    }
+
+    private Specification<User> getUserSpecification( Integer departmentId, String loginName, String name, String email, String phone, Integer isAvailable) {
+        return (Specification<User>) (root, criteriaQuery, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (departmentId != null && departmentId != -1){
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("departmentId"), departmentId));
+            }
+            if (loginName != null && !"".equals(loginName.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("loginName"), loginName));
+            }
+            if (name != null && !"".equals(name.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("name"), name));
+            }
+            if (email != null && !"".equals(email.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("email"), email));
+            }
+            if (phone != null && !"".equals(phone.trim())) {
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("phone"), phone));
+            }
+            if (isAvailable != null && isAvailable != -1){
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("isAvailable"), isAvailable));
+            }
+            return predicate;
+        };
     }
 
     @Override
     public void updateUser(User user) throws Exception {
         User userById = userDao.findUserById(user.getId());
         User bean = (User) BeanUtil.updateBean(userById, user);
-        userDao.updateUser(bean);
+        userDao.save(bean);
     }
 
     @Override
     public void saveUser(User user) {
-        userDao.saveUser(user);
+        user.setIsAvailable(1);
+        userDao.save(user);
     }
 
     @Override
@@ -93,7 +127,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateLoginTime(User user) {
-        userDao.updateLoginTime(user);
+    public void updateLoginTime(User user) throws Exception {
+        String localTime = DateUtil.getLocalTime();
+        user.setLastLoginTime(localTime);
+        User oldUser = userDao.findUserByLoginNameAndPassword(user.getLoginName(),MD5Util.encrypt(user.getPassword()));
+        BeanUtil.updateBean(oldUser, user);
+        userDao.save(oldUser);
     }
 }

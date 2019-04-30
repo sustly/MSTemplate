@@ -34,7 +34,7 @@ public class MenuController {
         Map<String, Object> map = new HashMap<String, Object>(20);
 
         List<Menu> menuList = menuService.getMenuList(request);
-        Long count = menuService.getMenuCount(request);
+        Integer count = menuService.getMenuCount(request);
         map.put("total", count);
         map.put("rows",menuList);
         return map;

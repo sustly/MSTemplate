@@ -17,7 +17,7 @@ public interface MenuService {
 
     void saveMenu(Menu menu);
 
-    Long getMenuCount(HttpServletRequest request);
+    Integer getMenuCount(HttpServletRequest request);
 
     void updateMenu(Menu menu);
 }

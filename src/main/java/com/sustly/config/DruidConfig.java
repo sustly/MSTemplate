@@ -18,7 +18,7 @@ import java.util.Map;
  * @author liyue
  * @date 2019/4/26 9:46
  */
-//@Configuration
+@Configuration
 public class DruidConfig {
 
     @ConfigurationProperties(prefix = "spring.datasource")

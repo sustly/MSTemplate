@@ -20,7 +20,7 @@ public class LoggerAspect {
     /**
      * 定义切点位置
      */
-    @Pointcut(value = "execution(* com.sustly.dao.impl..*(..))")
+    @Pointcut(value = "execution(* com.sustly.dao..*(..))")
     public void pointCut() {
     }
 

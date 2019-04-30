@@ -37,5 +37,5 @@ public interface UserService {
 
     User getUserById(Integer id);
 
-    void updateLoginTime(User user);
+    void updateLoginTime(User user) throws Exception;
 }
