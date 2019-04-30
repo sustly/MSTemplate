@@ -62,6 +62,14 @@ public class MenuServiceImpl implements MenuService {
         return menuDao.findAll(specification,pageable).stream().collect(Collectors.toList());
     }
 
+    /**
+     * 带条件的分页查询
+     * @param pid pid
+     * @param menuName menuName
+     * @param url url
+     * @param icon icon
+     * @return Specification
+     */
     private Specification<Menu> getMenuSpecification(int pid, String menuName, String url, String icon) {
         return (Specification<Menu>) (root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();

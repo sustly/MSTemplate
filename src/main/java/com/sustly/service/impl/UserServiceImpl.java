@@ -78,6 +78,16 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll(specification,pageable).stream().collect(Collectors.toList());
     }
 
+    /**
+     * 带条件的分页查询
+     * @param departmentId 用户组
+     * @param loginName loginName
+     * @param name name
+     * @param email email
+     * @param phone phone
+     * @param isAvailable isAvailable
+     * @return Specification
+     */
     private Specification<User> getUserSpecification( Integer departmentId, String loginName, String name, String email, String phone, Integer isAvailable) {
         return (Specification<User>) (root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
@@ -126,6 +136,11 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserById(id);
     }
 
+    /**
+     * 更新登录时间
+     * @param user user
+     * @throws Exception updateBean
+     */
     @Override
     public void updateLoginTime(User user) throws Exception {
         String localTime = DateUtil.getLocalTime();
