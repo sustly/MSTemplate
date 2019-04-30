@@ -34,7 +34,6 @@ public interface MenuDao extends JpaRepository<Menu,Integer>, JpaSpecificationEx
     @Modifying
     void deleteMenuByMenuId(Integer id);
 
-    /*void saveMenu(Menu menu);*/
 
     /**
      * 根据父id查询兄弟的个数
