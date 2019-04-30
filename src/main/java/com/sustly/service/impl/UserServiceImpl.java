@@ -144,9 +144,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateLoginTime(User user) throws Exception {
         String localTime = DateUtil.getLocalTime();
-        user.setLastLoginTime(localTime);
         User oldUser = userDao.findUserByLoginNameAndPassword(user.getLoginName(),MD5Util.encrypt(user.getPassword()));
-        BeanUtil.updateBean(oldUser, user);
+        oldUser.setLoginName(localTime);
         userDao.save(oldUser);
     }
 }
