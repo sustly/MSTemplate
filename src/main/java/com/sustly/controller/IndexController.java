@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class IndexController {
     @ResponseBody
     public Map<String, Object> loginOut(){
         SecurityUtils.getSubject().logout();
-        Map<String, Object> map = new HashMap<String, Object>(3);
+        Map<String, Object> map = new HashMap<>(3);
         map.put("isSuccess", true);
         return map;
     }
@@ -47,7 +46,7 @@ public class IndexController {
     @PostMapping("/login_showName")
     @ResponseBody
     public Map<String, Object> showName(){
-        Map<String, Object> map = new HashMap<String, Object>(3);
+        Map<String, Object> map = new HashMap<>(3);
         //获取主题
         Subject subject = SecurityUtils.getSubject();
         //提取主角,拿到user

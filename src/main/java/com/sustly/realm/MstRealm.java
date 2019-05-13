@@ -23,7 +23,7 @@ public class MstRealm extends AuthorizingRealm {
     /**
      * 授权
      * @param principalCollection principalCollection
-     * @return
+     * @return null
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -34,7 +34,7 @@ public class MstRealm extends AuthorizingRealm {
      * 认证
      * @param authenticationToken authenticationToken
      * @return AuthenticationInfo
-     * @throws AuthenticationException
+     * @throws AuthenticationException AuthenticationException
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {

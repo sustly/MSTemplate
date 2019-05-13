@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class UserController {
     public Map<String, Object> updatePassword(@RequestParam("oldPwd")String oldPass,
                                               @RequestParam("newPwd")String newPass){
         boolean flag = userService.updatePassword(oldPass,newPass);
-        Map<String, Object> map =new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         if (flag){
             map.put("isSuccess",true);
             map.put("message","修改密码成功！");
@@ -62,7 +61,7 @@ public class UserController {
     @PostMapping("user_delete")
     @ResponseBody
     public Map<String, Object> menuDelete(@RequestParam("id")Integer id){
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         userService.deleteUserById(id);
         map.put("message","删除成功！");
         return map;
@@ -77,7 +76,7 @@ public class UserController {
         user.setLoginName(loginName);
         user.setPassword(MD5Util.encrypt("000000"));
         user.setCreateTime(DateUtil.getLocalTime());
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         userService.saveUser(user);
         map.put("message","保存成功！");
         return map;
@@ -90,7 +89,7 @@ public class UserController {
         String loginName = URLDecoder.decode(user.getLoginName(), "utf-8");
         user.setName(name);
         user.setLoginName(loginName);
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         userService.updateUser(user);
         map.put("message","修改成功！");
         return map;

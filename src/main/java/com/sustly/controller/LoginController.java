@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +22,12 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public String login(){
@@ -35,7 +37,7 @@ public class LoginController {
     @PostMapping("/loginCheck")
     @ResponseBody
     public Map<String, Object> loginCheck(@RequestBody User user){
-        Map<String, Object> map = new HashMap<String, Object>(2);
+        Map<String, Object> map = new HashMap<>(2);
         try {
             //1. 创建令牌,身份证明
             UsernamePasswordToken upt = new UsernamePasswordToken(user.getLoginName(), user.getPassword());
