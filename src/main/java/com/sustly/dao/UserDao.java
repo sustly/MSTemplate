@@ -22,13 +22,13 @@ public interface UserDao extends JpaRepository<User, Integer>, JpaSpecificationE
     User findUserByLoginNameAndPassword(String name, String password);
 
     /**
-     * updataPasswordById
+     * updatePasswordById
      * @param id id
-     * @param newPasseord newPasseord
+     * @param newPassword newPassword
      */
     @Modifying
-    @Query("update User u set u.password=:newPasseord where u.id=:id")
-    void updatePasswordById(@Param("id") Integer id, @Param("newPasseord") String newPasseord);
+    @Query("update User u set u.password=:newPassword where u.id=:id")
+    void updatePasswordById(@Param("id") Integer id, @Param("newPassword") String newPassword);
 
     /**
      * deleteUserById
