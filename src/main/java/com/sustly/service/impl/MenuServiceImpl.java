@@ -35,7 +35,7 @@ public class MenuServiceImpl implements MenuService {
 
     /**
      * getMenuTree 获取json格式的menu
-     * @return
+     * @return JSONObject
      */
     @Override
     public JSONObject getMenuTree() {
@@ -147,7 +147,7 @@ public class MenuServiceImpl implements MenuService {
     /**
      * 处理menu tree 获取根节点
      * @param menuTree  menuTree
-     * @return
+     * @return JSONObject
      */
     private JSONObject dealMenuTree(List<Menu> menuTree) {
         Menu menuRoot = null;
@@ -170,7 +170,7 @@ public class MenuServiceImpl implements MenuService {
             return ;
         }
         for(Menu menu : menuTree){
-            if (menu.getPid() == menuRoot.getMenuId() ){
+            if (menu.getPid().intValue() == menuRoot.getMenuId() ){
                 if(menuRoot.getMenus() == null ){
                     List<Menu> list = new ArrayList<Menu>();
                     menuRoot.setMenus(list);
@@ -189,7 +189,7 @@ public class MenuServiceImpl implements MenuService {
      */
     private boolean getChildTree(Menu menuRoot, List<Menu> menuTree) {
         for(Menu menu : menuTree){
-            if (menu.getPid() == menuRoot.getMenuId() ){
+            if (menu.getPid().intValue() == menuRoot.getMenuId() ){
                 return false;
             }
         }
